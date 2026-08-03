@@ -17,14 +17,18 @@ class BG(pygame.sprite.Sprite):
         full_width = bg_image.get_width() * bg_scale_factor
         full_height = bg_image.get_height() * bg_scale_factor
 
-        self.image = pygame.transform.scale(bg_image, (full_width, full_height))
+        full_size_image = pygame.transform.scale(bg_image, (full_width, full_height))
+
+        self.image = pygame.Surface((full_width*2, full_height))
+        self.image.blit(full_size_image, (0,0))
+        self.image.blit(full_size_image, (full_width, 0))
         self.rect = self.image.get_rect(topleft = (0,0))
         self.pos = pygame.math.Vector2(self.rect.topleft)
 
     def update(self,dt):
         self.pos.x -= 300 * dt
         
-        if self.rect.right<=WINDOW_WIDTH:
+        if self.rect.centerx<=0:
             self.pos.x = 0
 
         self.rect.x = round(self.pos.x)
