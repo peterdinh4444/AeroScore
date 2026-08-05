@@ -59,3 +59,49 @@ class Ground(pygame.sprite.Sprite):
 
         self.rect.x = round(self.pos.x)
 
+class Plane(pygame.sprite.Sprite):
+    def __init__(self, groups):
+        super().__init__(groups)
+        # image
+        self.import_frames()
+        self.frame_index = 0
+        self.image = self.frames[self.frame_index]
+
+        # rect
+        self.rect = self.image.get_rect(midleft = (WINDOW_WIDTH/20, WINDOW_HEIGHT/2))
+        self.pos = pygame.math.Vector2(self.rect.topleft)
+
+        # movement
+        self.gravity = 3000
+        self.direction = 0 
+
+
+    def import_frames(self):
+        self.frames = []
+        for i in range(3):
+            plane_path = join(BASE_DIR, 'graphics', 'plane', f'red{i}.png')
+            plane_frame = pygame.image.load(plane_path).convert_alpha()
+
+            full_width = scale_factor * plane_frame.get_width() / 2
+            full_height = scale_factor * plane_frame.get_height() / 2
+
+            scaled_frame = pygame.transform.scale(plane_frame, (full_width, full_height))
+            self.frames.append(scaled_frame)
+
+    
+    def apply_gravity(self,dt):
+        self.direction += self.gravity * dt 
+        self.pos.y += self.direction * dt 
+        self.rect.y = round(self.pos.y)
+        # if self.rect.bottom <= 0: self.rect.bottom == 0
+
+    def jump(self):
+        self.direction = -1000
+
+    def animate(self, dt):
+        self.frame_index+=10 * dt
+        if self.frame_index>=len(self.frames):self.frame_index = 0
+
+    def update(self, dt):
+        self.apply_gravity(dt)
+        self.animate(dt)
