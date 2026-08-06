@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 from os.path import join, dirname, abspath
+from random import choice, randint
 
 
 BASE_DIR = dirname(dirname(abspath(__file__)))
@@ -113,3 +114,35 @@ class Plane(pygame.sprite.Sprite):
         self.apply_gravity(dt)
         self.animate(dt)
         self.rotate()
+
+class Obstacle(pygame.sprite.Sprite):
+    def __init__(self, groups):
+        super().__init__(groups)
+
+        orientation = choice(('up', 'down'))
+        self.image = pygame.image.load(join(BASE_DIR, 'graphics', 'obstacles', f'{choice([0,1])}.png'))
+        # full_height = scale_factor * self.image.get_height()
+        # full_width = scale_factor * self.image.get_width()
+
+
+        x = WINDOW_WIDTH + randint(40,100)
+
+        if orientation == 'up':
+            y = WINDOW_HEIGHT + randint(0,50)
+            self.rect = self.image.get_rect(midbottom = (x,y))
+        elif orientation == 'down': 
+            y = randint(-50,0)
+            self.image = pygame.transform.flip(self.image, False, True)
+            self.rect = self.image.get_rect(midtop = (x,y))
+
+        self.pos = pygame.math.Vector2(self.rect.topleft)
+
+    
+
+    def update(self, dt):
+        self.pos.x -= 400 * dt
+        self.rect.x = round(self.pos.x)
+        if self.rect.right <= -100: self.kill()
+
+
+        
