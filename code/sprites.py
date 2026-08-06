@@ -93,7 +93,9 @@ class Plane(pygame.sprite.Sprite):
         self.direction += self.gravity * dt 
         self.pos.y += self.direction * dt 
         self.rect.y = round(self.pos.y)
-        # if self.rect.bottom <= 0: self.rect.bottom == 0
+        if self.rect.top <= 0:
+            self.rect.top = 0
+            self.direction = 0
 
     def jump(self):
         self.direction = -1000
