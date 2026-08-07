@@ -3,14 +3,11 @@ from settings import *
 from os.path import join, dirname, abspath
 from random import choice, randint
 
-
-BASE_DIR = dirname(dirname(abspath(__file__)))
 scale_factor = 0
 class BG(pygame.sprite.Sprite):
     def __init__(self,groups):
         super().__init__(groups)
-        bg_path = join(BASE_DIR, 'graphics', 'environment', 'background.png')
-        bg_image = pygame.image.load(bg_path).convert()
+        bg_image = pygame.image.load(join(BASE_DIR, 'graphics', 'environment', 'background.png')).convert()
 
         # image scaling 
         global scale_factor
@@ -41,8 +38,7 @@ class Ground(pygame.sprite.Sprite):
 
         self.sprite_type = 'ground'
 
-        ground_path = join(BASE_DIR, 'graphics', 'environment', 'ground.png')
-        ground_surf = pygame.image.load(ground_path).convert_alpha()
+        ground_surf = pygame.image.load(join(BASE_DIR, 'graphics', 'environment', 'ground.png')).convert_alpha()
 
         full_width = int(scale_factor * ground_surf.get_width())
         full_height = int(scale_factor * ground_surf.get_height())

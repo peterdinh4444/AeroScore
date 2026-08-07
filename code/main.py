@@ -23,7 +23,6 @@ class Game:
         pygame.time.set_timer(self.obstacle_timer, 500)
 
         # text
-        BASE_DIR = dirname(dirname(abspath(__file__)))
         self.font = pygame.font.Font(join(BASE_DIR, 'graphics', 'font', 'BD_Cartoon_Shout.ttf'), 30)
         self.score = 0
         self.time_offset = 0
