@@ -6,14 +6,14 @@ from os.path import join, dirname, abspath
 class Game:
     def __init__(self):
         pygame.init()
+        self.active = True
         self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.clock = pygame.time.Clock()
 
-        # sprite groups 
+        # sprite groups and initialization
         self.all_sprites = pygame.sprite.Group()
         self.collision_sprites = pygame.sprite.Group()
 
-        # sprite initialization
         BG(self.all_sprites)
         Ground([self.all_sprites, self.collision_sprites])
         self.plane = Plane(self.all_sprites)
@@ -32,7 +32,12 @@ class Game:
         self.menu_surf = pygame.image.load(join(BASE_DIR, 'graphics', 'ui', 'menu.png'))
         self.menu_rect = self.menu_surf.get_rect(center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2))
 
-        self.active = True
+        # music
+        self.jump_sound = pygame.mixer.Sound(join(BASE_DIR, 'sounds', 'jump.wav'))
+        self.jump_sound.set_volume(0.1)
+        self.background_sound = pygame.mixer.Sound(join(BASE_DIR, 'sounds', 'music.wav'))
+        self.background_sound.set_volume(0.05)
+        self.background_sound.play(loops = -1)
     def collisions(self):
         if pygame.sprite.spritecollide(self.plane, self.collision_sprites, False, pygame.sprite.collide_mask):
             self.plane.kill()
@@ -74,6 +79,7 @@ class Game:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.active:
+                        self.jump_sound.play()
                         self.plane.jump()
                     else:
                         self.clear_obstacles()
