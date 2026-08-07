@@ -92,14 +92,21 @@ class Plane(pygame.sprite.Sprite):
             scaled_frame = pygame.transform.scale(plane_frame, (full_width, full_height))
             self.frames.append(scaled_frame)
 
-    
+
     def apply_gravity(self,dt):
         self.direction += self.gravity * dt 
         self.pos.y += self.direction * dt 
         self.rect.y = round(self.pos.y)
+
         if self.rect.top <= 0:
             self.rect.top = 0
+            self.pos.y = self.rect.top
+            if self.direction<0: self.direction = 0
+        if self.rect.bottom >= WINDOW_HEIGHT:
+            self.rect.bottom = WINDOW_HEIGHT
+            self.pos.y = self.rect.top
             self.direction = 0
+        
 
     def jump(self):
         self.direction = -1000
