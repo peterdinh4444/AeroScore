@@ -38,9 +38,10 @@ class Game:
             self.plane.kill()
             self.active = False
 
-            for sprite in self.collision_sprites.sprites():
-                if sprite.sprite_type == 'obstacle':
-                    sprite.kill()
+    def clear_obstacles(self):
+        for sprite in self.collision_sprites.sprites():
+            if sprite.sprite_type == 'obstacle':
+                sprite.kill()
 
     def display_score(self):
         if self.active:
@@ -75,6 +76,7 @@ class Game:
                     if self.active:
                         self.plane.jump()
                     else:
+                        self.clear_obstacles()
                         self.plane = Plane(self.all_sprites)
                         self.active = True
                         self.time_offset = pygame.time.get_ticks()
