@@ -26,6 +26,7 @@ class Game:
         BASE_DIR = dirname(dirname(abspath(__file__)))
         self.font = pygame.font.Font(join(BASE_DIR, 'graphics', 'font', 'BD_Cartoon_Shout.ttf'), 30)
         self.score = 0
+        self.time_offset = 0
 
         # menu
         self.menu_surf = pygame.image.load(join(BASE_DIR, 'graphics', 'ui', 'menu.png'))
@@ -34,18 +35,24 @@ class Game:
         self.active = True
     def collisions(self):
         if pygame.sprite.spritecollide(self.plane, self.collision_sprites, False, pygame.sprite.collide_mask):
+            self.plane.kill()
             self.active = False
+
+            for sprite in self.collision_sprites.sprites():
+                if sprite.sprite_type == 'obstacle':
+                    sprite.kill()
 
     def display_score(self):
         if self.active:
             x = 100
             y = 100
+            self.score = (pygame.time.get_ticks() - self.time_offset) // 1000
         else:
             y  = WINDOW_HEIGHT / 2 + self.menu_rect.height
             x = WINDOW_WIDTH / 2
 
 
-        self.score = pygame.time.get_ticks()//1000
+       
         score_surf = self.font.render(f'Score: {self.score}', True, 'black')
         score_rect = score_surf.get_rect(center = (x,y))
         self.display_surface.blit(score_surf, score_rect)
@@ -55,22 +62,29 @@ class Game:
 
 
         while True: 
+            # delta time
             dt = time.time() - last_time
             last_time = time.time()
 
-
+            # event loop
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.plane.jump()
-                if event.type == self.obstacle_timer:
-                    Obstacle([self.all_sprites, self.collision_sprites])
-                if event.type == pygame.KEYDOWN and not self.active:
-                    if event.key == pygame.K_SPACE:
+                    if self.active:
+                        self.plane.jump()
+                    else:
+                        self.plane = Plane(self.all_sprites)
                         self.active = True
+                        self.time_offset = pygame.time.get_ticks()
+                if event.type == self.obstacle_timer and self.active:
+                    Obstacle([self.all_sprites, self.collision_sprites])
 
+
+
+
+            # game logic
             self.all_sprites.update(dt)
             self.all_sprites.draw(self.display_surface)
             self.display_score()
@@ -79,6 +93,7 @@ class Game:
                 self.collisions()
             else: 
                 self.display_surface.blit(self.menu_surf, self.menu_rect)
+                
             
             pygame.display.update()
             self.clock.tick(FRAMERATE)

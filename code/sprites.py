@@ -38,6 +38,9 @@ class BG(pygame.sprite.Sprite):
 class Ground(pygame.sprite.Sprite):
     def __init__(self, groups):
         super().__init__(groups)
+
+        self.sprite_type = 'ground'
+
         ground_path = join(BASE_DIR, 'graphics', 'environment', 'ground.png')
         ground_surf = pygame.image.load(ground_path).convert_alpha()
 
@@ -54,7 +57,6 @@ class Ground(pygame.sprite.Sprite):
 
         # mask
         self.mask = pygame.mask.from_surface(self.image)
-
     def update(self,dt):
         self.pos.x -= 360 * dt
         
@@ -79,7 +81,6 @@ class Plane(pygame.sprite.Sprite):
         self.gravity = 3000
         self.direction = 0 
 
-
     def import_frames(self):
         self.frames = []
         for i in range(3):
@@ -91,7 +92,6 @@ class Plane(pygame.sprite.Sprite):
 
             scaled_frame = pygame.transform.scale(plane_frame, (full_width, full_height))
             self.frames.append(scaled_frame)
-
 
     def apply_gravity(self,dt):
         self.direction += self.gravity * dt 
@@ -107,7 +107,6 @@ class Plane(pygame.sprite.Sprite):
             self.pos.y = self.rect.top
             self.direction = 0
         
-
     def jump(self):
         self.direction = -1000
 
@@ -130,6 +129,8 @@ class Plane(pygame.sprite.Sprite):
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self, groups):
         super().__init__(groups)
+
+        self.sprite_type = 'obstacle'
 
         orientation = choice(('up', 'down'))
         self.image = pygame.image.load(join(BASE_DIR, 'graphics', 'obstacles', f'{choice([0,1])}.png'))
