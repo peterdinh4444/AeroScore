@@ -121,9 +121,10 @@ class Obstacle(pygame.sprite.Sprite):
 
         orientation = choice(('up', 'down'))
         self.image = pygame.image.load(join(BASE_DIR, 'graphics', 'obstacles', f'{choice([0,1])}.png'))
-        # full_height = scale_factor * self.image.get_height()
-        # full_width = scale_factor * self.image.get_width()
+        full_height = self.image.get_height() * 1.5
+        full_width = self.image.get_width() * 1.5
 
+        self.image = pygame.transform.scale(self.image, (full_width, full_height))
 
         x = WINDOW_WIDTH + randint(40,100)
 
