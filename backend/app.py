@@ -38,13 +38,13 @@ def submit_score():
     player_score = data["player_score"]
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO leaderboard (player_name, score) VALUES (?, ?)",
+    cursor.execute("INSERT INTO leaderboard (player_name, player_score) VALUES (?, ?)",
                     (player_name, player_score))
     conn.commit()
     conn.close()
 
     # code 2XX for success!
-    return jsonify({"Score was succesfully submitted"}), 201
+    return jsonify({"message: Score was succesfully submitted"}), 201
 
 @app.route("/api/leaderboard", methods=["GET"])
 def get_leaderboard():
