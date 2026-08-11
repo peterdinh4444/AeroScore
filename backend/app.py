@@ -51,9 +51,9 @@ def get_leaderboard():
     conn = sqlite3.connect(DB_NAME)
     conn.row_factory = sqlite3.Row #runs before cursor so cursor inherits formating 
     cursor = conn.cursor()
-    cursor.execute("SELECT player_name, score, created_at FROM leaderboard ORDER BY score DESC LIMIT 10") 
+    cursor.execute("SELECT player_name, player_score, created_at FROM leaderboard ORDER BY player_score DESC LIMIT 10") 
     rows = cursor.fetchall()
-    conn.close
+    conn.close()
 
     leaderboard = [dict(row) for row in rows]
 
