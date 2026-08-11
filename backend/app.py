@@ -1,7 +1,7 @@
 import sqlite3
 from flask import Flask, request, jsonify
 
-app = Flask(__name__)
+app = Flask(__name__) # reserves port on your ip
 DB_NAME = "leaderboard.db"
 
 
@@ -48,7 +48,16 @@ def submit_score():
 
 @app.route("/api/leaderboard", methods=["GET"])
 def get_leaderboard():
-    pass 
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row #runs before cursor so cursor inherits formating 
+    cursor = conn.cursor()
+    cursor.execute("SELECT player_name, score, created_at FROM leaderboard ORDER BY score DESC LIMIT 10") 
+    rows = cursor.fetchall()
+    conn.close
+
+    leaderboard = [dict(row) for row in rows]
+
+    return jsonify(leaderboard), 200
 
 if __name__ == "__main__":
     pass
