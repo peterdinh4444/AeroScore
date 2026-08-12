@@ -61,5 +61,5 @@ def get_leaderboard():
 
 if __name__ == "__main__":
     pass
-    #init_db()
-    #app.run(debug = True)
+    init_db()
+    app.run(debug = True)
