@@ -31,7 +31,7 @@ def submit_score():
 
     # safe gaurd for bad data, return client side error
     if not data or "player_name" not in data or "player_score" not in data:
-        return jsonify({"error: player data is missing"}), 400
+        return jsonify({"error": "player data is missing"}), 400
 
     # database insertion
     player_name = data["player_name"]
@@ -44,7 +44,7 @@ def submit_score():
     conn.close()
 
     # code 2XX for success!
-    return jsonify({"message: Score was succesfully submitted"}), 201
+    return jsonify({"message": "Score was succesfully submitted"}), 201
 
 @app.route("/api/leaderboard", methods=["GET"])
 def get_leaderboard():
@@ -62,4 +62,4 @@ def get_leaderboard():
 if __name__ == "__main__":
     pass
     init_db()
-    app.run(debug = True)
+    app.run()
