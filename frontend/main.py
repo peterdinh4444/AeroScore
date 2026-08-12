@@ -2,6 +2,7 @@ import pygame, sys, time
 from settings import *
 from sprites import BG, Ground, Plane, Obstacle
 from os.path import join, dirname, abspath
+from api_client import *
 
 class Game:
     def __init__(self):
