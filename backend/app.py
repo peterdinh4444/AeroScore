@@ -8,7 +8,7 @@ app = Flask(__name__) # reserves port on your ip
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 
-
+# replaced sqlite3 connection 
 def get_db_connection():
     if not DATABASE_URL: raise ValueError("DATABASE_URL variable missing")
 

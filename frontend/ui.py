@@ -7,7 +7,7 @@ class UI:
         self.display_surface = display_surface
         self.font = pygame.font.Font(join(BASE_DIR, 'graphics', 'font', 'BD_Cartoon_Shout.ttf'), 30)
         self.menu_surf = pygame.image.load(join(BASE_DIR, 'graphics', 'ui', 'menu.png'))
-        self.menu_rect = self.menu_surf.get_rect(center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/1.3))
+        self.menu_rect = self.menu_surf.get_rect(center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/1.2))
 
 
     def display_menu(self):
@@ -21,7 +21,7 @@ class UI:
             x, y = WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2
             score_surf = self.font.render(f'Your Score: {score}', True, 'black')
         elif game_state == "submitted":
-            x, y = WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 + self.menu_rect.height
+            x, y = WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 + 180
             score_surf = self.font.render(f'Your Score: {score}', True, 'coral1')
 
         score_rect = score_surf.get_rect(center = (x,y))
@@ -35,9 +35,13 @@ class UI:
         pygame.draw.rect(self.display_surface, 'black', box_rect, 2)
 
         prompt_font = pygame.font.Font(join(BASE_DIR, 'graphics', 'font', 'BD_Cartoon_Shout.ttf'), 18)
-        prompt_surf = prompt_font.render("Enter name and press return:", True, 'black')
-        prompt_rect = prompt_surf.get_rect(midbottom=(box_rect.centerx, box_rect.top - 10))
-        self.display_surface.blit(prompt_surf, prompt_rect)
+        prompt_surf1 = prompt_font.render("Enter name and press return", True, 'black')
+        prompt_rect1 = prompt_surf1.get_rect(midbottom=(box_rect.centerx, box_rect.top - 10))
+        self.display_surface.blit(prompt_surf1, prompt_rect1)
+
+        prompt_surf2 = prompt_font.render("(MAX LENGTH: 10)", True, 'black')
+        prompt_rect2 = prompt_surf2.get_rect(midtop=(box_rect.centerx, box_rect.bottom + 10 ))
+        self.display_surface.blit(prompt_surf2, prompt_rect2)
 
         text_surf = self.font.render(name_input, True, 'black')
         text_rect = text_surf.get_rect(center=box_rect.center)
@@ -56,5 +60,10 @@ class UI:
             elif i+1 == 2: row_surf = self.font.render(ranking_text, True, 'silver')
             elif i+1 == 3: row_surf = self.font.render(ranking_text, True, 'saddlebrown')
             
-            row_rect = row_surf.get_rect(topleft=(WINDOW_WIDTH / 2 - 170, start_y + 20 + i * 35))
+            row_rect = row_surf.get_rect(topleft=(WINDOW_WIDTH / 2 - 170, start_y + 20 + i * 38))
             self.display_surface.blit(row_surf, row_rect)
+
+        prompt_font = pygame.font.Font(join(BASE_DIR, 'graphics', 'font', 'BD_Cartoon_Shout.ttf'), 18)
+        next_message_surf = prompt_font.render("Click anywhere to continue!", True, 'grey69')
+        next_message_rect = next_message_surf.get_rect(center=(WINDOW_WIDTH/2, 740))
+        self.display_surface.blit(next_message_surf, next_message_rect)

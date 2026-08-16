@@ -48,7 +48,6 @@ class Game:
             self.game_state = "entering_name"
             self.name_input = ""
 
-
     def clear_obstacles(self):
         for sprite in self.collision_sprites.sprites():
             if sprite.sprite_type == 'obstacle':
