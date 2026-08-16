@@ -23,6 +23,10 @@ def init_db():
     conn.commit()
     conn.close()
 
+# db gets initialized on any platform 
+init_db()
+
+
 # run method when POST request arrives at address
 @app.route("/api/score", methods=["POST"])
 def submit_score():
@@ -60,6 +64,4 @@ def get_leaderboard():
     return jsonify(leaderboard), 200
 
 if __name__ == "__main__":
-    pass
-    init_db()
     app.run()
