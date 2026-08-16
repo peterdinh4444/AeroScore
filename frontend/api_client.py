@@ -7,9 +7,11 @@ def submit_score(player_name, player_score):
         response = requests.post(
             f"{BASE_API_URL}/api/score",
             json = {"player_name": player_name, "player_score": player_score},
-            timeout=2
+            timeout=60
             )
-        return response.status_code == 201
+
+        response.raise_for_status()
+        return response.status_code in (200,201)
     except requests.exceptions.RequestException as e:
         print(f"Failed to submit score: {e}")
         return False
