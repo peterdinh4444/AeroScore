@@ -1,7 +1,7 @@
 import pygame, sys, time
 from settings import *
 from sprites import BG, Ground, Plane, Obstacle
-from os.path import join, dirname, abspath
+from os.path import join
 from api_client import submit_score, get_leaderboard
 
 class Game:
