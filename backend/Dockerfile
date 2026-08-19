@@ -12,4 +12,4 @@ ENV PORT=5000
 
 EXPOSE 5000
 
-CMD exec gunicorn --bind 0.0.0.0:$PORT app:app
+CMD exec gunicorn --bind 0.0.0.0:$PORT --access-logfile - app:app
