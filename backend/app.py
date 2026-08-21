@@ -8,6 +8,7 @@ from flask_limiter.util import get_remote_address
 
 app = Flask(__name__) # reserves port on your ip
 DATABASE_URL = os.environ.get("DATABASE_URL")
+ADMIN_KEY = os.environ.get("ADMIN_KEY")
 
 # Limiter object 
 limiter = Limiter(get_remote_address, app=app, default_limits=[])
@@ -76,11 +77,6 @@ def validate_score_submission(data):
 
     return True, "player data submission is valid"
 
-    
-
-
-
-
 # run method when POST request arrives at address
 @app.route("/api/score", methods=["POST"])
 @limiter.limit("6 per minute")
@@ -120,5 +116,23 @@ def get_leaderboard():
 
     return jsonify(rows), 200
 
+@app.route("/api/admin/clear-leaderboard", methods=["DELETE"])
+def clear_leaderboard():
+    input_key = request.headers.get("X-Admin-Secret")
+    if not input_key or input_key != ADMIN_KEY:
+        return jsonify({"error": "Invalid or missing admin key"}), 403
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("TRUNCATE TABLE leaderboard")
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return jsonify({"message": "Leaderboard successfully deleted"})
+
+
+
+    
 if __name__ == "__main__":
     app.run()
